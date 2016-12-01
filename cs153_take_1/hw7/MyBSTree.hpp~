@@ -1,0 +1,590 @@
+/* Programmer: Dalton Lobosky
+   Section: 1
+   Date: 11/15/2013
+   File: MyBSTree.h
+-------------------------------------------------------------------------
+*/
+
+
+//-----------------------------------------------------------------
+// Purpose: Accessor function for the number of elements in the tree
+// Returns: number of elements in the tree
+static int elements;
+
+template < typename T >
+int MyBSTree<T>::size() const
+{
+  elements = 0;
+  size_recursive( m_root );
+  return( elements );
+}
+
+// Recursive size function
+// Keep track of # elements searched
+template < typename T >
+void MyBSTree<T>::size_recursive( TreeNode *t ) const
+{
+  if( t==NULL )
+  {
+    return;
+  }
+
+  ++elements;
+
+  if( t->m_left )
+  {
+    size_recursive(t->m_left);
+  }
+
+  if( t->m_right )
+  {
+    size_recursive(t->m_right);
+  }
+}
+
+//-----------------------------------------------------------------
+// Purpose: Checks if a tree is empty
+// Returns: 'true' if the tree is empty
+//     'false' otherwise
+template < typename T >
+bool MyBSTree<T>::isEmpty() const
+{
+  if( m_root == NULL )
+  {
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
+
+//-----------------------------------------------------------------
+// Purpose: Returns the height of the tree
+// Returns: height the tree
+static int height1;
+
+template < typename T >
+int MyBSTree<T>::height() const
+{
+  height1 = 0;
+  height_recursive( m_root );
+  return( height1 );
+}
+
+// Recursive height function
+// Keep track of depth searched
+template < typename T >
+void MyBSTree<T>::height_recursive( TreeNode *t ) const
+{
+  if( t==NULL )
+  {
+    return;
+  }
+
+  if( t->m_left || t->m_right )
+  {
+    ++height1;
+  }
+
+  if( t->m_left )
+  {
+    height_recursive(t->m_left);
+  }
+
+  if( t->m_right )
+  {
+    height_recursive(t->m_right);
+  }
+}
+
+//-----------------------------------------------------------------
+// Purpose: finds the maximum element in the Tree
+// Returns: a const reference to the maximum element
+template < typename T >
+const T& MyBSTree<T>::findMax() const
+{
+  TreeNode *current;
+  string errstr = "PANIC : Tree is Empty!!";
+
+  if( m_root == NULL )
+  {
+    throw errstr;
+  }
+
+  // Find the right-most element in the tree
+  current = m_root;
+  while( current->m_right )
+  {
+    current = current->m_right;
+  }
+
+  return( current->m_data );
+}
+
+//-----------------------------------------------------------------
+// Purpose: finds the minimum element in the Tree
+// Returns: a const reference to the minimum element
+template < typename T >
+const T& MyBSTree<T>::findMin() const
+{
+  TreeNode *current;
+  string errstr = "PANIC : Tree is Empty!!";
+
+  if( m_root == NULL )
+  {
+    throw errstr;
+  }
+
+  // Find the left-most element in the tree
+  current = m_root;
+  while( current->m_left )
+  {
+    current = current->m_left;
+  }
+
+  return( current->m_data );
+}
+
+//-----------------------------------------------------------------
+// Purpose: finds an element in the Tree
+// Parameters: x is value to be found
+// Returns:
+//     If The tree contains x then
+//         return N, the level of the node containing x
+//     If The tree does not contains x then
+//         return -N, where N is the level of the tree reached in the search
+template < typename T >
+int MyBSTree<T>::contains(const T& x) const
+{
+  TreeNode *current;
+  int level = 0;
+  bool foundit = false;
+
+  if( m_root == NULL )
+  {
+    return(0);
+  }
+
+  current = m_root;
+  while( current )
+  {
+    if( x == current->m_data )
+    {
+      foundit = true;
+      break;
+    }
+    if( x > current->m_data )
+    {
+      current = current->m_right;
+    }
+    else
+    {
+      current = current->m_left;
+    }
+    ++level;
+  }
+
+  if( foundit==true )
+  {
+    return(level);
+  }
+  else
+  {
+    return(0-level);
+  }
+}
+
+//-----------------------------------------------------------------
+// Purpose: Clears the Tree
+// Postconditions: an empty Tree
+template < typename T >
+void MyBSTree<T>::clear()
+{
+  T x;
+
+  if( m_root == NULL )
+  {
+    return;
+  }
+
+  // Loop to remove the maximum element until there are no more
+  x = findMax();
+  while( x > m_root->m_data )
+  {
+    remove(x);
+    x = findMax();
+  }
+
+  // Loop to remove the minimum element until there are no more
+  x = findMin();
+  while( x < m_root->m_data )
+  {
+    remove(x);
+    x = findMin();
+  }
+
+  // Remove the root node
+  remove(m_root->m_data);
+  m_root = NULL;
+}
+
+//-----------------------------------------------------------------
+// Purpose: Inserts an element into a tree
+// Parameters: x is value to be added to the tree
+// Postconditions: The tree now contains x
+//     if the tree already contains x, ignore insertion
+template < typename T >
+void MyBSTree<T>::insert(const T& x)
+{
+  TreeNode *newnode, *current, *last;
+
+  if( contains(x) > 0 ) // already in tree
+  {
+    return;
+  }
+
+  // Create new entry
+  newnode = new TreeNode;
+  newnode->m_data = x;
+  newnode->m_right = NULL;
+  newnode->m_left = NULL;
+
+  // Insert in empty tree
+  if( m_root == NULL )
+  {
+    m_root = newnode;
+    return;
+  }
+
+  // Find the right spot in the tree
+  current = m_root;
+  while( current )
+  {
+    last = current;
+    if( x > current->m_data )
+    {
+      current = current->m_right;
+    }
+    else
+    {
+      current = current->m_left;
+    }
+  }
+
+  // Back up one level and insert new entry
+  if( x < last->m_data )
+  {
+    last->m_left = newnode;
+  }
+  else
+  {
+    last->m_right = newnode;
+  }
+}
+
+//-----------------------------------------------------------------
+// Purpose: Removes an element from the tree
+// Parameters: x, the element to remove
+// Postconditions: the tree does not contains x
+template < typename T >
+void MyBSTree<T>::remove(const T& x)
+{
+  TreeNode *current, *last, *smallest;
+  bool found = false;
+
+  // Find the node to remove
+  current = m_root;
+  while( current )
+  {
+    if( current->m_data == x )
+    {
+      found = true;
+      break;
+    }
+
+    last = current;
+    if( x > current->m_data )
+    {
+      current = current->m_right;
+    }
+    else
+    {
+      current = current->m_left;
+    }
+  }
+
+  // Not found
+  if( !found )
+  {
+    return;
+  }
+
+  // Remove a node with 0 children:
+  // Need to set the parent's right or left pointer to NULL
+  if( current->m_left==NULL && current->m_right==NULL )
+  {
+    if( current == m_root ) // Removing root node
+    {
+    }
+    else if( last->m_left == current )
+    {
+      last->m_left = NULL;
+    }
+    else
+    {
+      last->m_right = NULL;
+    }
+    delete current;
+    return;
+  }
+
+  // Remove a node with 2 children:
+  // Need to move smallest child up in the tree
+  if( current->m_left && current->m_right )
+  {
+    last = current->m_left;
+    smallest = last;
+    while( smallest->m_left )
+    {
+      smallest = smallest->m_left;
+    }
+
+    //cout << "current is " << current->m_data << endl;
+    //cout << "last is " << last->m_data << endl;
+    //cout << "smallest is " << smallest->m_data << endl;
+
+    if( current == m_root )
+    {
+      if( smallest->m_right )
+      {
+        m_root->m_data = smallest->m_right->m_data;
+        last->m_right = smallest->m_right->m_left;
+        last->m_left = NULL;
+      }
+      else
+      {
+        m_root->m_data = smallest->m_data;
+        m_root->m_left = NULL;
+        delete smallest;
+      }
+      return;
+    }
+
+    if( smallest == last )
+    {
+      current->m_data = smallest->m_data;
+      current->m_left = smallest->m_right;
+    }
+    else
+    {
+      current->m_data = smallest->m_data;
+      last->m_left = smallest->m_right;
+    }
+    delete smallest;
+    return;
+  }
+
+  // Remove a node with 1 child:
+  // Need to move the child up in the tree
+  else
+  {
+    if( current == m_root ) // Removing root node
+    {
+      if( current->m_right )
+      {
+        m_root = current->m_right;
+      }
+      else
+      {
+        m_root = current->m_left;
+      }
+    }
+    else if( last->m_left == current ) // current is a left-hand node
+    {
+      if( current->m_right )
+      {
+        last->m_left = current->m_right;
+      }
+      else
+      {
+        last->m_left = current->m_left;
+      }
+    }
+    else // current is a right-hand node
+    {
+      if( current->m_right ) // current is a right-hand node
+      {
+        last->m_right = current->m_right;
+      }
+      else
+      {
+        last->m_right = current->m_left;
+      }
+    }
+    delete current;
+    return;
+  }
+}
+
+//-----------------------------------------------------------------
+// Purpose: Prints the Tree in Pre-Order     (Root, Left, Right)
+template < typename T >
+void MyBSTree<T>::printPreOrder() const
+{
+  if( m_root )
+  {
+    print_recursive_preorder(m_root);
+  }
+}
+
+// Recursive print function
+template < typename T >
+void MyBSTree<T>::print_recursive_preorder( TreeNode *t ) const
+{
+  if( t )
+  {
+    cout << t->m_data << endl;
+    if( t->m_left )
+    {
+      print_recursive_preorder(t->m_left);
+    }
+    if( t->m_right )
+    {
+      print_recursive_preorder(t->m_right);
+    }
+  }
+}
+
+//-----------------------------------------------------------------
+// Purpose: Prints the Tree in Post-Order    (Left, Right, Root)
+template < typename T >
+void MyBSTree<T>::printPostOrder() const
+{
+  if( m_root )
+  {
+    print_recursive_postorder(m_root);
+  }
+}
+
+// Recursive print function
+template < typename T >
+void MyBSTree<T>::print_recursive_postorder( TreeNode *t ) const
+{
+  if( t )
+  {
+    if( t->m_left )
+    {
+      print_recursive_postorder(t->m_left);
+    }
+    if( t->m_right )
+    {
+      print_recursive_postorder(t->m_right);
+    }
+    cout << t->m_data << endl;
+  }
+}
+
+//-----------------------------------------------------------------
+//print
+template < typename T >
+void MyBSTree<T>::print() const
+{
+  cout << endl;
+  if( m_root )
+  {
+    print_recursive_inorder(m_root->m_right);
+    cout << m_root->m_data << endl << endl;
+    print_recursive_inorder(m_root->m_left);
+  }
+}
+
+// Recursive print function
+template < typename T >
+void MyBSTree<T>::print_recursive_inorder( TreeNode *t ) const
+{
+  int spaces, i;
+
+  if( t==NULL )
+  {
+    return;
+  }
+
+  if( t->m_right )
+  {
+    print_recursive_inorder(t->m_right);
+  }
+
+  spaces = contains(t->m_data);
+  for(i=0; i<spaces; i++ )
+  {
+    cout << "    ";
+  }
+  cout << t->m_data << endl << endl;
+
+  if( t->m_left )
+  {
+    print_recursive_inorder(t->m_left);
+  }
+}
+
+//-----------------------------------------------------------------
+// Constructor
+template < typename T >
+MyBSTree<T>::MyBSTree()
+{
+  m_root = NULL;
+}
+
+//-----------------------------------------------------------------
+// Copy Constructor
+template < typename T >
+MyBSTree<T>::MyBSTree(const MyBSTree<T>& cpy)
+{
+  TreeNode *current = cpy.m_root;
+
+  this->m_root = NULL;
+  this->copy_recursive( current );
+}
+
+//-----------------------------------------------------------------
+// Destructor
+template < typename T >
+MyBSTree<T>::~MyBSTree()
+{
+  clear();
+}
+
+//-----------------------------------------------------------------
+// Operator =
+template < typename T >
+MyBSTree<T>& MyBSTree<T>::operator= (const MyBSTree<T>& rhs)
+{
+  TreeNode *current = rhs.m_root;
+
+  if( this==&rhs )
+  {
+    return( *this );
+  }
+
+  this->copy_recursive( current );
+  return( *this );
+}
+
+// Recursive copy function
+template < typename T >
+void MyBSTree<T>::copy_recursive( TreeNode *t )
+{
+  if( t )
+  {
+    insert( t->m_data );
+    if( t->m_left )
+    {
+      copy_recursive(t->m_left);
+    }
+    if( t->m_right )
+    {
+      copy_recursive(t->m_right);
+    }
+  }
+}

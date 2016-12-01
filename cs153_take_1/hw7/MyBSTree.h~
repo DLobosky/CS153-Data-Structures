@@ -1,0 +1,62 @@
+/* Programmer: Dalton Lobosky
+   Section: 1
+   Date: 11/15/2013
+   File: MyBSTree.h
+-------------------------------------------------------------------------
+*/
+
+
+#ifndef MYBSTREE_H
+#define MYBSTREE_H
+
+#include "abstractbstree.h"
+#include <cstdlib>
+
+using namespace std;
+
+// MyBSTree class
+template < typename T >
+class MyBSTree: public AbstractBSTree<T>
+{
+protected:
+  struct TreeNode
+  {
+    T m_data;
+    TreeNode *m_right; // right side contains values > m_data
+    TreeNode *m_left;  // left side contains values < m_data
+  };
+  TreeNode *m_root;
+
+  // Recursive functions
+  void height_recursive( TreeNode *t ) const;
+  void size_recursive( TreeNode *t ) const;
+  void print_recursive_inorder( TreeNode *t ) const;
+  void print_recursive_preorder( TreeNode *t ) const;
+  void print_recursive_postorder( TreeNode *t ) const;
+  void copy_recursive( TreeNode *t );
+
+public:
+  int size() const;
+  bool isEmpty() const;
+  int height() const;
+  const T& findMax() const;
+  const T& findMin() const;
+  int contains(const T& x) const;
+  
+  void clear();
+  void insert(const T& x);
+  void remove(const T& x);
+
+  void printPreOrder() const;
+  void printPostOrder() const; 
+  void print() const;
+
+  MyBSTree();
+  MyBSTree(const MyBSTree<T>& cpy);
+  ~MyBSTree();
+  MyBSTree<T>& operator= (const MyBSTree<T>& rhs);
+};
+
+#include "MyBSTree.hpp"
+
+#endif 

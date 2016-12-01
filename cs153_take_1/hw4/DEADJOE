@@ -1,0 +1,897 @@
+
+*** These modified files were found in JOE when it aborted on Fri Oct 11 15:10:29 2013
+*** JOE was aborted because the terminal closed
+
+*** File '(Unnamed)'
+autoindent
+
+*** File '(Unnamed)'
+root
+
+*** File '(Unnamed)'
+allrobots.cpp
+allrobots.cpp
+all
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+
+*** These modified files were found in JOE when it aborted on Fri Oct 11 17:58:31 2013
+*** JOE was aborted because the terminal closed
+
+*** File '(Unnamed)'
+autoindent
+
+*** File '(Unnamed)'
+root
+
+*** File '(Unnamed)'
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+all
+allrobots.cpp
+robot.h
+
+*** These modified files were found in JOE when it aborted on Fri Oct 11 17:58:31 2013
+*** JOE was aborted by UNIX signal 1
+
+*** File 'allrobots.cpp'
+// Programmer: Dalton Lobosky
+// Class: Comp Sci 153
+// Homework 4
+// Section A
+//*****************************************************************************
+
+#include "robot.h"
+#include <iostream>
+
+
+using namespace std;
+
+int main()
+{
+  int num_robots = 0;
+  int robot_type;
+  
+  cin >> num_robots;
+
+  Robot ** ra = new Robot*[num_robots];
+  
+  for (int i = 0; i < num_robots; i++)
+  {
+    cin >> robot_type;
+    
+/*    switch(robot_type)
+    {
+      case 0:
+      {
+        ra[i] = new Bender();
+        
+        cin >> ra[i] -> m_name;
+        
+        cin >> ra[i] -> num_power_source;
+        
+        cin >> ra[i] -> num_gep_copro;
+      }
+      break;
+      
+      case 1:
+      {
+        ra[i] = new Welder();
+
+        cin >> ra[i] -> m_name;
+                
+        cin >> ra[i] -> num_power_source;
+                                
+        cin >> ra[i] -> num_plates;
+        
+        cin >> ra[i] -> arm_density;
+      }
+      break;
+      
+      case 2:
+      {
+        ra[i] = new Legged();
+
+	cin >> ra[i] -> m_name;
+        
+        cin >> ra[i] -> num_cpu;
+        
+        cin >> ra[i] -> num_apps;
+        
+        cin >> ra[i] -> num_legs;
+      }
+      break;
+
+      case 2:
+      {
+        ra[i] = new Wheeled();
+
+	cin >> ra[i] -> m_name;
+        
+        cin >> ra[i] -> num_cpu;
+        
+        cin >> ra[i] -> num_apps;
+        
+        cin >> ra[i] -> num_wheels;
+      }
+      break;
+    
+      case 4:
+      {
+        ra[i] = new Hover();
+
+	cin >> ra[i] -> m_name;
+        
+        cin >> ra[i] -> num_cpu;
+        
+        cin >> ra[i] -> num_apps;
+        
+        cin >> ra[i] -> num_rockets;
+        
+        cin >> ra[i] -> num_engines;
+      }
+      break;
+    }
+*/    
+  }  
+}
+
+class Industrial : public Robot
+{
+  public:
+    
+    Industrial();
+    
+  private:
+  
+  protected:
+    
+    static const int num_power_source;
+    
+  
+}; 
+
+class Domestic : public Robot
+{
+  public:
+  
+    Domestic();
+  
+  private:
+  
+  protected:
+  
+    static const int num_cpu;
+    static const int num_apps;
+    
+};
+
+class Bender : public Industrial
+{
+  public:
+  
+    Bender(); 
+  
+  private:
+  
+  protected:
+  
+    static const int num_geo_copro;
+    
+    float speed()
+    {
+      return ((.3 * num_power_source) + (.02 * num_geo_copro));
+    }
+    
+    float strength()
+    {
+      return (.55 * num_power_source);
+    }
+    
+    float toughness()
+    {
+      return 3.1415;
+    }
+    
+    float intelligence()
+    {
+      return (.34 + (1.3 * num_geo_copro));
+    }
+};
+
+class Welder : public Industrial
+{
+   public:
+  
+     Welder();
+   
+   private:
+   
+   protected:
+   
+     static const int num_plates;
+     static const float arm_density;
+
+    float speed()
+    {
+      return ((.1 * num_power_source) - (.22 * num_plates * arm_density));
+    }
+
+    float strength()
+    {
+      return (3.15 * num_power_source);
+    }
+
+    float toughness()
+    {
+      return (5.19 * num_plates * arm_density);
+    }
+
+    float intelligence()
+    {
+      return (.45);
+    }
+};
+
+class Legged : public Domestic
+{
+   public:
+
+     Legged();
+
+   private:
+
+   protected:
+   
+     static const int num_legs;
+
+    float speed()
+    {
+      return (7.15 - (.04 * num_legs * num_legs));
+    }
+
+    float strength()
+    {
+      return (.123);
+    }
+
+    float toughness()
+    {
+      return (1.4 * (1 / num_legs));
+    }
+
+    float intelligence()
+    {
+      return (.24 * (num_cpu / num_apps));
+    }
+};
+
+class Wheeled : public Domestic
+{
+   public:
+
+     Wheeled();
+
+   private:
+
+   protected:
+     static const int num_wheels;
+
+    float speed()
+    {
+      return (.33 * num_wheels * num_wheels);
+    }
+
+    float strength()
+    {
+      return (4.444);
+    }
+
+    float toughness()
+    {
+      return (5.12 - (.7 * num_wheels));
+    }
+
+    float intelligence()
+    {
+      return (1.3 * (num_cpu / num_apps));
+    }
+};
+
+class Hover : public Domestic
+{
+   public:
+
+   private:
+
+   protected:
+     static const int num_rockets;
+     static const int num_engines;
+
+    float speed()
+    {
+      return (.59 * num_rockets * num_engines);
+    }
+
+    float strength()
+    {
+      return (1.12 * (1 / num_engines));
+    }
+
+    float toughness()
+    {
+      return (.99);
+    }
+
+    float intelligence()
+    {
+      return (5.2 * (num_cpu / num_apps) - .8 * (1 / num_rockets));
+    }
+};
+
+*** File '(Unnamed)'
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+
+*** These modified files were found in JOE when it aborted on Fri Oct 11 22:07:30 2013
+*** JOE was aborted because the terminal closed
+
+*** File '(Unnamed)'
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+robot.h
+
+*** These modified files were found in JOE when it aborted on Mon Oct 14 17:07:59 2013
+*** JOE was aborted because the terminal closed
+
+*** File '(Unnamed)'
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+hi
+allrobots.cpp
+
+*** These modified files were found in JOE when it aborted on Mon Oct 14 17:07:59 2013
+*** JOE was aborted because the terminal closed
+
+*** File '(Unnamed)'
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+robot.h
+
+*** These modified files were found in JOE when it aborted on Fri Oct 18 01:48:31 2013
+*** JOE was aborted because the terminal closed
+
+*** File 'allrobots.cpp'
+// Programmer: Dalton Lobosky
+// Class: Comp Sci 153
+// Homework 4
+// Section A
+//*****************************************************************************
+
+#include "robot.h"
+#include <iostream>
+
+
+using namespace std;
+
+class Industrial : public Robot
+{  
+  public:
+    
+    Industrial(string n, int nps);
+    
+  private:
+ 
+  protected:
+   
+    int num_power_source; 
+};
+
+Industrial::Industrial(string n, int nps) : Robot(n)
+{
+  num_power_source = nps;
+}
+
+
+
+class Domestic : public Robot
+{
+  public:
+    Domestic(string n, int ncpu, int napp);
+  private:
+  
+  protected:
+    int num_cpu;
+    int num_apps;
+    
+};
+
+Domestic::Domestic (string n, int ncpu, int napp) : Robot(n)
+{
+  num_cpu = ncpu;
+  num_apps = napp;
+}
+
+class Bender : public Industrial
+{
+  public:
+    Bender(string n, int nps, int gc);
+    
+  private:
+
+    static const double speed1;
+    static const double speed2;
+    static const double strength1;
+    static const double tough;
+    static const double intel1;
+    static const double intel2;
+
+  protected:
+    int num_geo_copro;
+    
+    float speed()
+    {
+      return (float) ((speed1 * num_power_source) + (speed2 * num_geo_copro));
+    }
+    
+    float strength()
+    {
+      return (float) (strength1 * num_power_source);
+    }
+    
+    float toughness()
+    {
+      return (float) (tough);
+    }
+    
+    float intelligence()
+    {
+      return (intel1 + (intel2 * num_geo_copro));
+    }
+};
+
+const double Bender::speed1 = 0.3;
+const double Bender::speed2 = 0.02;
+const double Bender::strength1 = 0.55;
+const double Bender::tough = 3.1415;
+const double Bender::intel1 = 0.34;
+const double Bender::intel2 = 1.3;
+
+Bender::Bender(string n, int nps, int gc):Industrial(n,nps)
+{
+  num_geo_copro = gc;
+}
+
+class Welder : public Industrial
+{
+   public:
+     Welder(string n, int nps, int nplat, float armdens);
+
+   private:
+   
+     static const double speed3;
+     static const double speed4;
+     static const double strength1;
+     static const double tough;
+     static const double intel1;
+
+   protected:
+     int num_plates;
+     float arm_density;
+
+    float speed()
+    {
+      return ((speed3 * num_power_source) - (speed4 * num_plates * arm_density));
+    }
+
+    float strength()
+    {
+      return (strength1 * num_power_source);
+    }
+
+    float toughness()
+    {
+      return (tough * num_plates * arm_density);
+    }
+
+    float intelligence()
+    {
+      return (intel1);
+    }
+};
+
+const double Welder::speed3 = 0.1;
+const double Welder::speed4 = 0.22;
+const double Welder::strength1 = 3.15;
+const double Welder::tough = 5.19;
+const double Welder::intel1 = 0.45;
+
+Welder::Welder(string n, int nps, int nplat, float armdens):Industrial(n,nps)
+{
+  num_plates = nplat;
+  arm_density = armdens;
+}
+
+class Legged : public Domestic
+{
+   public:
+      Legged(string n, int ncpu, int napp, int nlegs);
+
+   private:
+
+     static const double speed1;
+     static const double speed2;
+     static const double strength1;
+     static const double tough;
+     static const double intel1;
+
+   protected:
+    int num_legs;
+
+    float speed()
+    {
+      return (speed1 - (speed2 * num_legs * num_legs));
+    }
+
+    float strength()
+    {
+      return (strength1);
+    }
+
+    float toughness()
+    {
+      return (tough * (1 / num_legs));
+    }
+
+    float intelligence()
+    {
+      return (intel1 * (num_cpu / num_apps));
+    }
+};
+
+const double Legged::speed1 = 7.15;
+const double Legged::speed2 = 0.04;
+const double Legged::strength1 = 0.123;
+const double Legged::tough = 1.4;
+const double Legged::intel1 = 2.4;
+
+Legged::Legged(string n, int ncpu, int napp, int nlegs):Domestic(n, ncpu, napp)
+{
+  num_legs = nlegs;;
+}
+
+class Wheeled : public Domestic
+{
+   public:
+    Wheeled(string n, int ncpu, int napp, int nwheels);
+
+   private:
+     
+     static const double speed1;
+     static const double strength1;
+     static const double tough1;
+     static const double tough2;
+     static const double intel1;
+     
+   protected:
+    int num_wheels;
+
+    float speed()
+    {
+      return (speed1 * num_wheels * num_wheels);
+    }
+
+    float strength()
+    {
+      return (strength1);
+    }
+
+    float toughness()
+    {
+      return (tough1 - (tough2 * num_wheels));
+    }
+
+    float intelligence()
+    {
+      return (intel1 * (num_cpu / num_apps));
+    }
+};
+
+const double Wheeled::speed1 = 0.33;
+const double Wheeled::strength1 = 4.444;
+const double Wheeled::tough1 = 5.12;
+const double Wheeled::tough2 = 0.7;
+const double Wheeled::intel1 = 1.3;
+
+Wheeled::Wheeled(string n, int ncpu, int napp, int nwheels):Domestic(n, ncpu, napp)
+{
+  num_wheels = nwheels;
+}
+
+class Hover : public Domestic
+{
+   public:
+
+    Hover(string n, int ncpu, int napp, int nrckts, int nengn);
+
+   private:
+
+    static const double speed1;
+    static const double strength1;
+    static const double tough1;
+    static const double intel2;
+    static const double intel1;
+
+   protected:
+    int num_rockets;
+    int num_engines;
+
+    float speed()
+    {
+      return (speed1 * num_rockets * num_engines);
+    }
+
+    float strength()
+    {
+      return (strength1 * (1 / num_engines));
+    }
+
+    float toughness()
+    {
+      return (tough1);
+    }
+
+    float intelligence()
+    {
+      return (intel1 * (num_cpu / num_apps) - intel2 * (1 / num_rockets));
+    }
+};
+
+const double Hover::speed1 = 0.59;
+const double Hover::strength1 = 1.12;
+const double Hover::tough1 = 0.99;
+const double Hover::intel1 = 5.2;
+const double Hover::intel2 = 0.8;
+
+Hover::Hover(string n, int ncpu, int napp, int nrckts, int nengn):Domestic(n, ncpu, napp)
+{
+  num_rockets = nrckts;
+  num_engines = nengn;
+}
+
+
+
+
+
+int main()
+{ 
+  int num_robots = 0;
+  int robot_type, power, geo, plates, armdensity, cpu, apps, legs, wheels, rockets, engines;
+  int speed_avg, speed_sum, strength_sum, strength_avg, toughness_sum, toughness_avg;
+  int intelligence_sum, intelligence_avg, index;
+  string name;
+  bool speed_check = false, strength_check = false, toughness_check = false, intelligence_check = false;
+
+  cin >> num_robots;
+
+  Robot ** ra = new Robot*[num_robots];
+
+  for (int i = 0; i < num_robots; i++)
+  {
+    cin >> robot_type;
+    cin >> name;
+    
+    switch(robot_type)  
+    {
+      case BENDER:
+      {         
+        cin >> power;
+        
+        cin >> geo;
+        
+        ra[i] = new Bender(name, power, geo);
+      }
+      break;
+      
+      case WELDER:
+      {
+        cin >> power;
+      
+        cin >> plates;
+        
+        cin >> armdensity;
+      
+        ra[i] = new Welder(name, power, plates, armdensity);
+      }
+      break;
+      
+      case LEGGED:
+      {
+        cin >> cpu;
+        
+        cin >> apps;
+  
+        cin >> legs;
+      
+        ra[i] = new Legged(name, cpu, apps, legs);
+      }
+      break;
+
+      case WHEELED:
+      {
+        cin >> cpu; 
+        
+        cin >> apps;
+        
+        cin >> wheels;
+      
+        ra[i] = new Wheeled(name, cpu, apps, wheels);
+      }
+      break;
+    
+      case HOVER:
+      {
+        cin >> cpu;
+        
+        cin >> apps;
+        
+        cin >> rockets;
+        
+        cin >> engines;
+      
+        ra[i] = new Hover(name, cpu, apps, rockets, engines);
+      }
+      break;
+      
+      default:
+      break;
+    }    
+  }
+
+//IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+/*
+
+SPEED
+
+*/
+//IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+  
+
+  cout << "[SPEED]" << endl;
+  
+  speed_avg = 0;
+  speed_sum = 0;
+  
+  for (int k = 0; k < num_robots; k++)
+  {
+    if (ra[k] -> speed() > 0)
+    {
+      speed_sum += ra[k] -> speed();   
+    }
+  }
+  
+  speed_avg = (float) (speed_sum / num_robots);
+  
+  cout << "The average speed is " << speed_avg << " circus-rings per second." << endl;  
+
+  index = 0;
+
+  for (int x = 1; x < num_robots; x++)
+  {
+    if ((ra[index] -> speed()) < (ra[x] -> speed()))
+    {
+      index = x;
+    }  
+   
+  }    
+ 
+  cout << "The highest speed value is " << ra[index] -> speed() << " by " << ra[index] -> 
+*** These modified files were found in JOE when it aborted on Fri Oct 18 12:06:03 2013
+*** JOE was aborted because the terminal closed
+
+*** File '(Unnamed)'
+ls
+ls
+f;ldskfja;sdlfkjasd;lfkjasd;flkjasdflkjds;lfkdsljsd
+
+*** File '(Unnamed)'
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+robot.h
+sampleinput.txt
+sampleinput.txt
+
+*** These modified files were found in JOE when it aborted on Fri Oct 18 15:11:31 2013
+*** JOE was aborted because the terminal closed
+
+*** File '(Unnamed)'
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+
+*** These modified files were found in JOE when it aborted on Tue Nov  5 00:20:45 2013
+*** JOE was aborted because the terminal closed
+
+*** File '(Unnamed)'
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+allrobots.cpp
+hw5thingy.cpp
+allrobots.cpp
